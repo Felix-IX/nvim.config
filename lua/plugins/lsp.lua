@@ -35,11 +35,6 @@ require("lspconfig").rust_analyzer.setup({
   },
 })
 
-require("lspconfig").bashls.setup({
-  capabilities = require("cmp_nvim_lsp").default_capabilities(),
-  filetypes = { "sh", "bash" },
-})
-
 -- Java lsp (jdtls)
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "java",
@@ -80,3 +75,18 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 -- jdtls end
+
+-- asm-lsp
+require("lspconfig").asm_lsp.setup({
+  capabilities = capabilities,   -- 与其它 LSP 共享的 capabilities
+  filetypes   = { "asm", "s", "S" },  -- 需要时可按需调整
+  settings    = {
+    -- asm‑lsp 目前没有像 rust‑analyzer 那样丰富的嵌套设置，
+    -- 这里保留空表，以后官方新增选项时可直接填进去。
+    ["asm-lsp"] = {
+      -- 例：切换 Intel ↔ AT&T 语法（若未来支持）
+      -- syntax = "intel",   -- or "att"
+    },
+  },
+  root_dir = require("lspconfig.util").root_pattern(".git", "."),
+})
